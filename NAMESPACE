@@ -1,0 +1,11 @@
+useDynLib(MatrixLDA)
+
+export(MN_MLE)
+export(MatLDA)
+export(MatLDA_Grid)
+export(PredictMN)
+
+
+import(plyr)
+import(glasso)
+import(Rcpp)
