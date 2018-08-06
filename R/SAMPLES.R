@@ -1,4 +1,5 @@
 
+
 #########################################################
 #### Center inputs given class labels and means #########
 #########################################################
@@ -30,10 +31,10 @@ CENTER_X = function(X, class, mean){
 ######################################################
 #### Compute U given Vinv and centered Y        ######
 ######################################################
-### Input: Y.c; see above						######
-###		   Vinv; an estimate of    				######
+### Input: Y.c; see above
+###		   Vinv; an estimate of  
 ######################################################
-## Output: Y.c; Y centered by class mean  		###### 
+## Output: Y.c; Y centered by class mean 
 ######################################################
 
 U_SAMPLE = function(X.c, V){
@@ -141,32 +142,30 @@ THRESH_MEAN = function(M, G, C){
 EVAL_OBJ_FUNC = function(X, class, M.update, U.hat, V.hat, weightmat, lambda1, lambda2, 
 	S.u = NULL, S.v = NULL){
 
-	## preliminaries
+	#  ------ preliminaries
 	r = dim(X)[1]
 	p = dim(X)[2]
 	N = dim(X)[3]
 	C = length(unique(class))
 	nc = count(class)[,2]
 
-	## compute determinants
+	# ----- compute determinants
 	detU = - p*determinant(U.hat, logarithm=TRUE)$modulus[1] 
 	detV = - r*determinant(V.hat, logarithm=TRUE)$modulus[1] 
 
-	### compute penalties
+	# -----  compute penalties
 	mus = 0 
-	if(C > 1){
-		for (q in 1:(C-1)) {
-			for (d in (q+1):C) {
-				kk = (C-1)*(q-1) + d - 1 - q*(q-1)/2
-				mus = mus + sum(weightmat[((kk-1)*r + 1):(kk*r), ]*abs(M.update[,,q] - M.update[,,d]))
-			}
+	for (q in 1:(C-1)) {
+		for (d in (q+1):C) {
+			kk = (C-1)*(q-1) + d - 1 - q*(q-1)/2
+			mus = mus + sum(weightmat[((kk-1)*r + 1):(kk*r), ]*abs(M.update[,,q] - M.update[,,d]))
 		}
 	}
 
 	means = lambda1*mus
 	inv.covs = lambda2*(sum(abs(U.hat))*sum(abs(V.hat)))
 
-	## evaluate negative log likelihood
+	# -----  evaluate negative log likelihood
 	if (is.null(S.u) && is.null(S.v)) {
 		L = rep(0, N)
 		for (jjj in 1:N) {
@@ -186,7 +185,6 @@ EVAL_OBJ_FUNC = function(X, class, M.update, U.hat, V.hat, weightmat, lambda1, l
 
 	return(list("out" = out.val, "MeanPen" = means, "CovPen" = inv.covs))
 }
-
 
 
 

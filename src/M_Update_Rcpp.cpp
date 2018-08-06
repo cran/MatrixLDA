@@ -74,7 +74,7 @@ List M_Update_Rcpp(arma::mat Mean, arma::mat D, arma::mat Uinv, arma::mat Vinv,
 	 	+ (.5/pihat(Cinner))*Uinv*righttemp*Vinv; 
 
 
-	 	/* Mean for classes 2 to C-1; need to loop to add m< amd m> j */
+	 	/* Mean for classes 2 to C-1; need to loop to add D+ and subtract D- (see manuscript) */
 	 	if(C > 2){
 	 		/* fix mean index betwen 1 and Cinner*/
 			for(int j=1; j < Cinner; ++j){
@@ -137,8 +137,8 @@ List M_Update_Rcpp(arma::mat Mean, arma::mat D, arma::mat Uinv, arma::mat Vinv,
 	 		}
 	 	}	
 
-
-	  	if(k%200 == 0){ 
+	 	/* change this number to impose fixed iteration restarts */
+	  	if(k%10000 == 0){ 
 	 		alphatemp = 1; 
 	 		Dhattemp = Dtemp; 
 
@@ -150,7 +150,6 @@ List M_Update_Rcpp(arma::mat Mean, arma::mat D, arma::mat Uinv, arma::mat Vinv,
 		}
 
 	 if(k > 10){
-	 	
 	 	 rresid = 0; 
 	 	 	for(int i=0; i < Cinner ; ++i){
 	 			for(int j=i+1; j < Cinner+1; ++j){
@@ -178,7 +177,7 @@ List M_Update_Rcpp(arma::mat Mean, arma::mat D, arma::mat Uinv, arma::mat Vinv,
 
 	 k++; 
 
-	 if(k > 50000){
+	 if(k > 10000){
 	  	notconverged = false; 
 	 }
 	} while(notconverged); 

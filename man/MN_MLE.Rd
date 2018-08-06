@@ -7,9 +7,9 @@
 MN_MLE(X, class, max.iter = 1000, tol = 1e-06, quiet = TRUE)
 }
 \arguments{
-\item{X}{An \eqn{r \times p \times N} array of training set predictors.}
+\item{X}{An \eqn{r \times c \times N} array of training set predictors.}
 
-\item{class}{\eqn{N}-vector of training set class labels; should be numeric from \eqn{\left\{1,...,C\right\}}.}
+\item{class}{\eqn{N}-vector of training set class labels; should be numeric from \eqn{\left\{1,...,J\right\}}.}
 
 \item{max.iter}{Maximum number of iterations for ``flip-flop'' algorithm.}
 
@@ -18,18 +18,26 @@ MN_MLE(X, class, max.iter = 1000, tol = 1e-06, quiet = TRUE)
 \item{quiet}{Logical. Should the objective function value be printed at each update? Default is \code{TRUE}. Note that \code{quiet=FALSE} will increase computational time.}}
 \value{
 Returns of list of class "MN", which contains the following elements: 
-\item{Mean}{\eqn{\bar{X}}; An \eqn{r \times p \times C} array of sample class means.}
+\item{Mean}{\eqn{\bar{X}}; An \eqn{r \times c \times C} array of sample class means.}
 
 \item{U}{\eqn{\hat{U}^{\rm MLE}};  the \eqn{r \times r} estimated precision matrix for the row variables.}
 
-\item{U}{\eqn{\hat{V}^{\rm MLE}};  the \eqn{p \times p} estimated precision matrix for the column variables.}
+\item{V}{\eqn{\hat{V}^{\rm MLE}};  the \eqn{c \times c} estimated precision matrix for the column variables.}
 
-\item{pi.list}{\eqn{\hat{\pi}}; \eqn{C}-vector with marginal class probabilities from training set.}
+\item{pi.list}{\eqn{\hat{\pi}}; \eqn{J}-vector with marginal class probabilities from training set.}
 }
 
 \description{
-A function for fitting the \eqn{C}-class matrix-normal model using maximum likelihood. Uses the so-called ``flip-flop'' algorithm after initializing at \eqn{U = I_r}. 
+A function for fitting the \eqn{J}-class matrix-normal model using maximum likelihood. Uses the so-called ``flip-flop'' algorithm after initializing at \eqn{U = I_r}. 
 }
+
+\references{
+\itemize{
+\item Molstad, A. J., and Rothman, A. J. (2018). A penalized likelihood method for classification with matrix-valued predictors. \emph{Journal of Computational and Graphical Statistics}.
+}
+}
+
+
 
 \examples{
 ## Generate realizations of matrix-normal random variables

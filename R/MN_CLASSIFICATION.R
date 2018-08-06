@@ -1,7 +1,6 @@
-##############################################################################
-######## Function to classify new observations via MN linear discrimiant #####
-##############################################################################
-
+# ----------------------------------------------------------
+# Function to classify new observations via MN linear discrimiant 
+# ----------------------------------------------------------
 MN_CLASSIFICATION = function(X, class=NULL, M, U, V, pi.list, C=NULL){
 
 	N = dim(X)[3]
@@ -10,12 +9,12 @@ MN_CLASSIFICATION = function(X, class=NULL, M, U, V, pi.list, C=NULL){
 	}
 
 	class.mat = matrix(0, nrow=N, ncol=C)
-	pred.class = numeric(length=N)
+	pred.class = rep(0, N)
 
 	for (j in 1:N) {
 		for (k in 1:C) {
 			new = X[,,j] - M[,,k]
-			class.mat[j,k] = .5*sum(diag(crossprod(U, new)%*%tcrossprod(V,new)))  - log(pi.list[k])
+			class.mat[j,k] = .5*sum(rowSums(crossprod(U, new)*t(tcrossprod(V, new))))  - log(pi.list[k])
 		}
 		pred.class[j] = which.min(class.mat[j,])
 	}
@@ -30,18 +29,16 @@ MN_CLASSIFICATION = function(X, class=NULL, M, U, V, pi.list, C=NULL){
 
 }
 
-################################################################################
-############        Predict_MN                      ############################
-################################################################################
-####	object: An object of type "MN"; output MatLDA or MN_MLE
-####	newdata: New data to be classified; array of r x p x Ntest
-####	newclass: Class labels for new data if available
-#################################################################################
-####	pred.class: a vector of length N_test of predicted class memberships
-#### 	misclass: if newclass is specified, the misclassification rate
-#### 	prob.mat: a matrix of N_test x C with value of discriminant function evaluted at each test data point
-#################################################################################
 
+#' Predict_MN
+#' @param object An object of type "MN"; output MatLDA or MN_MLE
+#' @param newdata New data to be classified; array of r x p x Ntest
+#' @param newclass Class labels for new data if available
+#' @return pred.class a vector of length N_test of predicted class memberships
+#' @return misclass if newclass is specified, the misclassification rate
+#' @return prob.mat a matrix of N_test x C with value of discriminant function evaluted at each test data point
+#' @export
+#'
 PredictMN = function(object, newdata, newclass=NULL){
 
 	U = object$U

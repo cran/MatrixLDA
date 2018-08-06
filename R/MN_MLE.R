@@ -1,19 +1,15 @@
-#######################################################################
-#####     Matrix-normal maximum likelihood estimator      #############
-########################################################################
-### 	X r x p x N array of training data
-### 	class vector of class labels for N training data observations
-### 	max.iter maximum number of iterations for flip-flop algorithm
-### 	tol covergence tolerance for flip flop algorithm
-### 	quiet should print obj fnc values at each iteration?
-#########################################################################
-### 	Returns a list of class "MN" containing:
-### 	Mean: the r x p x C estimate of class means
-### 	U: the estimated U
-### 	V: the estimated V
-### 	pi.list: marginal class probabilites based on training data
-#########################################################################
-
+#' Matrix-normal maximum likelihood estimator
+#' @param X r x p x N array of training data
+#' @param class vector of class labels for N training data observations
+#' @param max.iter maximum number of iterations for flip-flop algorithm
+#' @param tol covergence tolerance for flip flop algorithm
+#' @param quiet should print obj fnc values at each iteration?
+#' @return a list of class "MN" containing
+#' @return Mean the r x p x C estimate of class means
+#' @return U the estimated U
+#' @return V the estimated V
+#' @return pi.list marginal class probabilites based on training data
+#' @export
 MN_MLE = function(X, class, max.iter = 1000, tol=1e-6, quiet=TRUE){
 
 	r = dim(X)[1]

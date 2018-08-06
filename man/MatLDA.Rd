@@ -3,7 +3,7 @@
 \name{MatLDA}
 \alias{MatLDA}
 
-\title{Fits the \eqn{C}-class penalized matrix-normal model for a single pair of tuning parameters. }
+\title{Fits the \eqn{J}-class penalized matrix-normal model for a single pair of tuning parameters. }
 
 \usage{
 MatLDA(X, class, lambda1, lambda2, quiet = TRUE, Xval = NULL,
@@ -11,9 +11,9 @@ MatLDA(X, class, lambda1, lambda2, quiet = TRUE, Xval = NULL,
   full.tol = 1e-06)
 }
 \arguments{
-\item{X}{An \eqn{r \times p \times N} array of training set predictors.}
+\item{X}{An \eqn{r \times c \times N} array of training set predictors.}
 
-\item{class}{\eqn{N}-vector of training set class labels; should be numeric from \eqn{\left\{1,...,C\right\}}.}
+\item{class}{\eqn{N}-vector of training set class labels; should be numeric from \eqn{\left\{1,...,J\right\}}.}
 
 \item{lambda1}{A non-negative tuning parameter for the mean penalty.}
 
@@ -21,17 +21,17 @@ MatLDA(X, class, lambda1, lambda2, quiet = TRUE, Xval = NULL,
 
 \item{quiet}{Logical. Should the objective function value be printed at each update? Default is \code{TRUE}. Note that \code{quiet=FALSE} will increase computational time.}
 
-\item{Xval}{An \eqn{r \times p \times N_{\rm val}} array of validation set predictors. Default is \code{NULL}.}
+\item{Xval}{An \eqn{r \times c \times N_{\rm val}} array of validation set predictors. Default is \code{NULL}.}
 
-\item{classval}{\eqn{N_{\rm val}}-vector of validation set class labels; should be numeric from \eqn{\left\{1,...,C\right\}}. Default is \code{NULL}.}
+\item{classval}{\eqn{N_{\rm val}}-vector of validation set class labels; should be numeric from \eqn{\left\{1,...,J\right\}}. Default is \code{NULL}.}
 
 \item{k.iter}{Maximum number of iterations for full blockwise coordinate descent algorithm.}
 
-\item{cov.tol}{Convergence tolerance for graphical lasso subalgorithms; passed to \code{glasso}. Default is \eqn{1e^{-5}}.}
+\item{cov.tol}{Convergence tolerance for graphical lasso sub-algorithms; passed to \code{glasso}. Default is \eqn{1e^{-5}}.}
 
-\item{m.tol}{Convergence tolerance for mean update alternating minimization algorithm. Default is \eqn{1e^{-5}}.}
+\item{m.tol}{Convergence tolerance for mean update alternating minimization algorithm. Default is \eqn{1e^{-5}}. It is recommended to track the objective function value using \code{quiet = FALSE} and adjust if necessary.}
 
-\item{full.tol}{Convergence tolerance for full blockwise coordinate descent algorithm; based on decrease in objective function value. Default is \eqn{1e^{-6}}.}
+\item{full.tol}{Convergence tolerance for full blockwise coordinate descent algorithm; based on decrease in objective function value. Default is \eqn{1e^{-6}}. It is recommended to track the objective function value using \code{quiet = FALSE} and adjust if necessary. }
 
 }
 \value{
@@ -40,19 +40,27 @@ Returns of list of class "MN", which contains the following elements:
 
 \item{Val}{The misclassification rate on the validation set, if provided.}
 
-\item{Mean}{\eqn{\hat{M}}; an \eqn{r \times p \times C} array of estimated class means. }
+\item{Mean}{\eqn{\hat{M}}; an \eqn{r \times c \times J} array of estimated class means. }
 
 \item{U}{\eqn{\hat{U}}; the \eqn{r \times r} estimated precision matrix for the row variables.}
 
-\item{V}{\eqn{\hat{V}}; the \eqn{p \times p} estimated precision matrix for the column variables.}
+\item{V}{\eqn{\hat{V}}; the \eqn{c \times c} estimated precision matrix for the column variables.}
 
-\item{pi.list}{\eqn{\hat{\pi}}; \eqn{C}-vector with marginal class probabilities from training set.}
+\item{pi.list}{\eqn{\hat{\pi}}; \eqn{J}-vector with marginal class probabilities from training set.}
 
 }
 
 \description{
-A function for fitting the \eqn{C}-class penalized matrix-normal model based on a single set of tuning parameters \eqn{(\lambda_1, \lambda_2)}. Returns an object of class "MN", which can be used for prediction using the \code{PredictMN} function. 
+A function for fitting the \eqn{J}-class penalized matrix-normal model based on a single set of tuning parameters \eqn{(\lambda_1, \lambda_2)}. Returns an object of class "MN", which can be used for prediction using the \code{PredictMN} function. 
 }
+
+\references{
+\itemize{
+\item Molstad, A. J., and Rothman, A. J. (2018). A penalized likelihood method for classification with matrix-valued predictors. \emph{Journal of Computational and Graphical Statistics}.
+}
+}
+
+
 
 \examples{
 ## Generate realizations of matrix-normal random variables

@@ -2,16 +2,16 @@
 % Please edit documentation in R/MatLDA_Grid.R
 \name{MatLDA_Grid}
 \alias{MatLDA_Grid}
-\title{Fits the \eqn{C}-class penalized matrix-normal model for a two-dimensional grid of tuning parameters. Used for tuning parameter selection. }
+\title{Fits the \eqn{J}-class penalized matrix-normal model for a two-dimensional grid of tuning parameters. Used for tuning parameter selection. }
 \usage{
 MatLDA_Grid(X, class, lambda1, lambda2, quiet = TRUE, Xval = NULL,
   classval = NULL, k.iter = 100, cov.tol = 1e-05, m.tol = 1e-05,
   full.tol = 1e-06)
 }
 \arguments{
-\item{X}{An \eqn{r \times p \times N} array of training set predictors.}
+\item{X}{An \eqn{r \times c \times N} array of training set predictors.}
 
-\item{class}{\eqn{N}-vector of training set class labels; should be numeric from \eqn{\left\{1,...,C\right\}}.}
+\item{class}{\eqn{N}-vector of training set class labels; should be numeric from \eqn{\left\{1,...,J\right\}}.}
 
 \item{lambda1}{A vector of non-negative candidate tuning parameters for the mean penalty.}
 
@@ -19,17 +19,17 @@ MatLDA_Grid(X, class, lambda1, lambda2, quiet = TRUE, Xval = NULL,
 
 \item{quiet}{Logical. Should the objective function value be printed at each update? Default is \code{TRUE}. Note that \code{quiet=FALSE} will increase computational time.}
 
-\item{Xval}{An \eqn{r \times p \times N_{\rm val}} array of validation set predictors. Default is \code{NULL}. }
+\item{Xval}{An \eqn{r \times c \times N_{\rm val}} array of validation set predictors. Default is \code{NULL}. }
 
-\item{classval}{\eqn{N_{\rm val}}-vector of validation set class labels; should be numeric from \eqn{\left\{1,...,C\right\}}.Default is \code{NULL}.}
+\item{classval}{\eqn{N_{\rm val}}-vector of validation set class labels; should be numeric from \eqn{\left\{1,...,J\right\}}.Default is \code{NULL}.}
 
 \item{k.iter}{Maximum number of iterations for full blockwise coordinate descent algorithm. Default is 100.}
 
 \item{cov.tol}{Convergence tolerance for graphical lasso subalgorithms; passed to \code{glasso}. Default is \eqn{1e^{-5}}.}
 
-\item{m.tol}{Convergence tolerance for mean update alternating minimization algorithm. Default is \eqn{1e^{-5}}.}
+\item{m.tol}{Convergence tolerance for mean update alternating minimization algorithm. Default is \eqn{1e^{-5}}. It is recommended to track the objective function value using \code{quiet = FALSE} and adjust tolerance if necessary.}
 
-\item{full.tol}{Convergence tolerance for full blockwise coordinate descent algorithm; based on decrease in objective function value. Default is \eqn{1e^{-6}}.}
+\item{full.tol}{Convergence tolerance for full blockwise coordinate descent algorithm; based on decrease in objective function value. Default is \eqn{1e^{-6}}. It is recommended to track the objective function value using \code{quiet = FALSE} and adjust tolerance if necessary. }
 }
 \value{
 \item{Val.mat}{A matrix of dimension \code{length}(lambda1) \eqn{\times}\code{length}(lambda2) with validation set misclassification propotions.}
@@ -43,6 +43,14 @@ MatLDA_Grid(X, class, lambda1, lambda2, quiet = TRUE, Xval = NULL,
 \description{
 A function for fitting the penalized matrix normal model for a two-dimensional grid of tuning parameters. Meant to be used with a validation set to select tuning parameters. Can also be used inside a \eqn{k}-fold cross-validation function where the training set is the data outside the \eqn{k}th fold and the validation set is comprised of the \eqn{k}th fold sample data. 
 }
+
+\references{
+\itemize{
+\item Molstad, A. J., and Rothman, A. J. (2018). A penalized likelihood method for classification with matrix-valued predictors. \emph{Journal of Computational and Graphical Statistics}.
+}
+}
+
+
 
 \examples{
 

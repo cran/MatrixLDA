@@ -9,9 +9,9 @@ PredictMN(object, newdata, newclass = NULL)
 \arguments{
 \item{object}{An object of class "MN"; output from \code{MatLDA} or \code{MN_MLE}. }
 
-\item{newdata}{New data to be classified; an \eqn{r \times p \times N_{\rm test}} array.}
+\item{newdata}{New data to be classified; an \eqn{r \times c \times N_{\rm test}} array.}
 
-\item{newclass}{Class labels for new data; should be \eqn{in \left\{1, \dots, C\right\}}. Default is \code{NULL}.}
+\item{newclass}{Class labels for new data; should be \eqn{in \left\{1, \dots, J\right\}}. Default is \code{NULL}.}
 }
 
 \value{
@@ -20,11 +20,19 @@ PredictMN(object, newdata, newclass = NULL)
 
 \item{misclass}{If \code{newclass} is non-\code{NULL}, returns the misclassification proportion on the test data set.}
 
-\item{prob.mat}{A \eqn{N_{\rm test} \times C} matrix with the value of discriminant evaluated at each test data point.}
+\item{prob.mat}{A \eqn{N_{\rm test} \times J} matrix with the value of discriminant evaluated at each test data point.}
 }
 \description{
 A function for prediction based on an object of class "MN"; models fit by \code{MatLDA} or \code{MN_MLE}. 
 }
+
+\references{
+\itemize{
+\item Molstad, A. J., and Rothman, A. J. (2018). A penalized likelihood method for classification with matrix-valued predictors. \emph{Journal of Computational and Graphical Statistics}.
+}
+}
+
+
 
 \examples{
 ## Generate realizations of matrix-normal random variables
@@ -70,12 +78,12 @@ Vinv.sqrt = tcrossprod(tcrossprod(eoV$vec, diag(eoV$val^(1/2))),eoV$vec)
 ## generate N.total realizations of matrix-variate normal data
 set.seed(1)
 dat.array = array(0, dim=c(r,p,N.total))
-	class.total = numeric(length=N.total)
-	for(jj in 1:N.total){
-		class.total[jj] = sample(1:C, 1, prob=pi.list)
-		dat.array[,,jj] = tcrossprod(crossprod(Uinv.sqrt, matrix(rnorm(r*p), nrow=r)),
-		Vinv.sqrt) + M.array[,,class.total[jj]]
-	}
+class.total = numeric(length=N.total)
+for(jj in 1:N.total){
+	class.total[jj] = sample(1:C, 1, prob=pi.list)
+	dat.array[,,jj] = tcrossprod(crossprod(Uinv.sqrt, matrix(rnorm(r*p), nrow=r)),
+	Vinv.sqrt) + M.array[,,class.total[jj]]
+}
 
 ## store generated data 
 X = dat.array[,,1:N]
